@@ -23,4 +23,25 @@ export class PostRepository implements IPostRepository {
     post.setId(id);
     return post;
   }
+
+  async getAllPosts(): Promise<Post[]> {
+    const { data, error } = await supabase
+      .from('posts')
+      .select('id, title, content');
+    if (error) throw new Error("Error al obtener posts: " + error.message);
+    return data.map((item) => {
+      const post = new Post(item.title, item.content);
+      post.setId(item.id);
+      return post;
+    });
+  }
+
+  async updatePost(post: Post): Promise<void> {
+    if (!post.getId()) throw new Error("El post no tiene un ID válido.");
+    const { error } = await supabase
+      .from('posts')
+      .update({ title: post.getTitle(), content: post.getContent() })
+      .eq('id', post.getId());
+    if (error) throw error;
+  }
 }

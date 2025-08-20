@@ -22,3 +22,21 @@ export async function getPostById(id: number): Promise<Post | null> {
   if (!repository) return null;
   return await repository.getPostById(id);
 }
+
+export async function getAllPosts(): Promise<Post[]> {
+  if (!repository) return [];
+  return await repository.getAllPosts();
+}
+
+export async function updatePost(title: string, content: string, id: number): Promise<boolean> {
+  if (!repository) return false;
+  try {
+    const post = new Post(title, content);
+    post.setId(id);
+    await repository.updatePost(post);
+    return true;
+  } catch (error) {
+    console.error("Error al actualizar post:", (error as Error).message);
+    return false;
+  }
+}
