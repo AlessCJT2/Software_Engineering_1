@@ -1,0 +1,1 @@
+se vinculo Bruno con Postgres y la terminal desde el puerto 3000 para guardar los cambios 
