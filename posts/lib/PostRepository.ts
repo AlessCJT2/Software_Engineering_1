@@ -44,4 +44,12 @@ export class PostRepository implements IPostRepository {
       .eq('id', post.getId());
     if (error) throw error;
   }
+
+  async deletePost(id: number): Promise<void> {
+    const { error } = await supabase
+      .from('posts')
+      .delete()
+      .eq('id', id);
+    if (error) throw error;
+  }
 }

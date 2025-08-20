@@ -40,3 +40,14 @@ export async function updatePost(title: string, content: string, id: number): Pr
     return false;
   }
 }
+
+export async function deletePost(id: number): Promise<boolean> {
+  if (!repository) return false;
+  try {
+    await repository.deletePost(id);
+    return true;
+  } catch (error) {
+    console.error("Error al eliminar post:", (error as Error).message);
+    return false;
+  }
+}
