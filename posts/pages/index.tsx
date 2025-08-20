@@ -7,20 +7,34 @@ export default function Home() {
   const [content, setContent] = useState('');
   const [titleError, setTitleError] = useState<string | null>(null);
   const [contentError, setContentError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    let valid = true;
     try {
       new Title(title);
       setTitleError(null);
     } catch (error) {
       setTitleError((error as Error).message);
+      valid = false;
     }
     try {
       new Content(content);
       setContentError(null);
     } catch (error) {
       setContentError((error as Error).message);
+      valid = false;
+    }
+    if (valid) {
+      const res = await fetch('/api/savePost', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, content }),
+      });
+      const data = await res.json();
+      if (res.ok) setMessage(`Post guardado con ID: ${data.id}`);
+      else setMessage('Error al guardar');
     }
   };
 
@@ -49,6 +63,7 @@ export default function Home() {
         </div>
         <button type="submit">Crear Post</button>
       </form>
+      {message && <p>{message}</p>}
     </div>
   );
 }
