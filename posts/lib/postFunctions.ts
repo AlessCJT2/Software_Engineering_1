@@ -17,3 +17,8 @@ export async function createPost(title: string, content: string): Promise<{ id: 
     return null;
   }
 }
+
+export async function getPostById(id: number): Promise<Post | null> {
+  if (!repository) return null;
+  return await repository.getPostById(id);
+}
