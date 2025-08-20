@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPost } from '../lib/postFunctions';
 import { Title } from '../lib/Title';
 import { Content } from '../lib/Content';
 
@@ -27,13 +28,8 @@ export default function Home() {
       valid = false;
     }
     if (valid) {
-      const res = await fetch('/api/savePost', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, content }),
-      });
-      const data = await res.json();
-      if (res.ok) setMessage(`Post guardado con ID: ${data.id}`);
+      const result = await createPost(title, content);
+      if (result) setMessage(`Post guardado con ID: ${result.id}`);
       else setMessage('Error al guardar');
     }
   };
