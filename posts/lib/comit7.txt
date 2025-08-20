@@ -1,0 +1,2 @@
+en el paso 2 se crearon las clases con con Title.ts y Contet.ts que ya 
+tienen incorporados el patron de Value-Objetc
